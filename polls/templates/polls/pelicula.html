@@ -1,0 +1,78 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Cinema App</title>
+    <!-- BOOTSTRAP 4 -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/litera/bootstrap.min.css"
+    />
+    <!-- FONTS -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'index.css' %}" />
+  </head>
+
+  <body>
+    <main class="container p-4">
+      <h1 class="display-4 text-center title mt-4">Películas en estreno</h1>
+      <div class="row mt-4">
+        <div class="col-md-4 text-center">
+          <div class="card">
+            <div class="card-header">
+              <h4>Agregar película</h4>
+            </div>
+            <div class="card-body">
+              <form action="/crearPelicula" method="POST">
+                {% csrf_token %} {{ form.as_p }}
+
+                <button type="submit" class="btn btn-primary btn-block">
+                  Save
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <div class="row">
+            {% for pelicula in peliculas %}
+            <div class="col-md-4" key="{{pelicula.id}}">
+              <div class="card mt-4">
+                <div class="card-title text-center mt-3">
+                  <h5>{{pelicula.nombre}}</h5>
+                </div>
+                <div class="card-body">{{pelicula.sinopsis}}</div>
+
+                <div class="card-footer text-center">
+                  <span
+                    ><a
+                      href="{% url 'actualizarPelicula' pelicula.id %}"
+                      class="btn btn-warning"
+                      >Editar</a
+                    ></span
+                  >
+                  <span
+                    ><a
+                      href="{% url 'eliminarPelicula' pelicula.id %}"
+                      class="btn btn-danger"
+                      >Eliminar</a
+                    ></span
+                  >
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
